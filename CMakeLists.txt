@@ -9,8 +9,13 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 add_executable(turtlebot_moveit src/turtlebot_moveit.cpp)
+add_executable(get_eef_pose src/get_eef_pose.cpp)
+
+
 target_include_directories(turtlebot_moveit PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
@@ -19,9 +24,17 @@ ament_target_dependencies(
   turtlebot_moveit
   "moveit_ros_planning_interface"
   "rclcpp"
+  "geometry_msgs"
+)
+ament_target_dependencies(
+  get_eef_pose
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "geometry_msgs"
+  "tf2_geometry_msgs"
 )
 
-install(TARGETS turtlebot_moveit
+install(TARGETS turtlebot_moveit get_eef_pose
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
