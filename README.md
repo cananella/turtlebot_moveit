@@ -17,7 +17,7 @@ ros2 run turtlebot_moveit turtlebot_moveit
 ```
 
 
-# camera node and calibration
+## camera node and calibration
 1. [camera node on SBC](https://github.com/ros-drivers/usb_cam)
 ```bash
 ## on SBC
@@ -28,4 +28,14 @@ ros2 run usb_cam usb_cam_node_exe
 ```bash
 ## on PC
 ros2 run camera_calibration cameracalibrator --size 7x9 --square 0.02 --ros-args -r image:=/image_raw
+```
+
+
+## aruco marker detect
+``` bash
+## on SBC  turn on cam 
+ros2 run usb_cam usb_cam_node_exe
+
+## on pc   turn on detector
+ros2 run turtlebot_moveit aruco_marker_detect.py
 ```
