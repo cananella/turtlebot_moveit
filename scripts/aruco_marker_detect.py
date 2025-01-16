@@ -9,6 +9,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from std_msgs.msg import Float32, Int32
+from aruco_msgs.msg import Marker, MarkerArray
 from cv_bridge import CvBridge
 
 def detect_markers(image, camera_matrix, dist_coeffs, marker_size):
@@ -56,7 +57,7 @@ def rotationMatrixToEulerAngles(R):
     return np.degrees(x), np.degrees(y), np.degrees(z)
 
 def load_camera_parameters(yaml_file):
-    package_share_directory = get_package_share_directory('turtlebot_moveit')
+    package_share_directory = get_package_share_directory('turtlebot_moveit') ## package name
     calibration_file = os.path.join(package_share_directory, 'config', yaml_file)
 
     with open(calibration_file, 'r') as f:
@@ -77,6 +78,8 @@ class ArucoMarkerDetector(Node):
             10)
         self.distance_publisher = self.create_publisher(Float32, 'closest_marker', 10)
         self.marker_id_publisher = self.create_publisher(Int32, 'closest_marker_id', 10)
+        self.marker_publisher = self.create_publisher(MarkerArray, 'detected_markers', 10)
+        
         self.bridge = CvBridge()
         self.marker_size = 0.04
         self.camera_matrix, self.dist_coeffs = load_camera_parameters('calibration_params.yaml')
@@ -89,12 +92,25 @@ class ArucoMarkerDetector(Node):
         else:
             closest_marker = min(detect_data, key=lambda x: x[3])
             self.get_logger().debug(f"Closest Marker ID: {closest_marker[0]}, Distance: {closest_marker[3]:.2f}m")
-            destance_msg = Float32()
+            distance_msg = Float32()
             id_msg = Int32()
-            destance_msg.data = closest_marker[3]
+            distance_msg.data = closest_marker[3]
             id_msg.data = int(closest_marker[0])
-            self.distance_publisher.publish(destance_msg)
+            self.distance_publisher.publish(distance_msg)
             self.marker_id_publisher.publish(id_msg)
+
+            marker_array_msg = MarkerArray()
+            for marker in detect_data:
+                marker_msg = Marker()
+                marker_msg.id = int(marker[0])
+                marker_msg.pose.pose.position.x = marker[1][0]
+                marker_msg.pose.pose.position.y = marker[1][1]
+                marker_msg.pose.pose.position.z = marker[1][2]
+                marker_msg.pose.pose.orientation.x = marker[2][2]
+                marker_msg.pose.pose.orientation.y = marker[2][1]
+                marker_msg.pose.pose.orientation.z = marker[2][0]
+                marker_array_msg.markers.append(marker_msg)
+            self.marker_publisher.publish(marker_array_msg)
         cv2.imshow('Detected Markers', frame)
         cv2.waitKey(1)
 

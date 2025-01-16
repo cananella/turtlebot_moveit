@@ -34,8 +34,17 @@ ros2 run camera_calibration cameracalibrator --size 7x9 --square 0.02 --ros-args
 ## aruco marker detect
 ``` bash
 ## on SBC  turn on cam 
-ros2 run usb_cam usb_cam_node_exe
+ros2 run usb_cam usb_cam_node_exe   ## carmera node
+ros2 run aruco_marker_detect aruco_marker_detector  ##aruco marker detector on SBC
 
 ## on pc   turn on detector
-ros2 run turtlebot_moveit aruco_marker_detect.py
+## aruco marker detector on PC -> 딜레이가 길면 원활하게 작동안될수있음
+ros2 run turtlebot_moveit aruco_marker_detect.py    
+
+
+## on pc    aruco detect & move
+## id 가 0 인 아루코 마커가 detect 될때 z 값이 0.13m 보다 크다면 cmd_vel 에 linear_x = 0.15 를 publish 함
+ros2 run turtlebot_moveit aruco_movet_test.py
+
+
 ```
