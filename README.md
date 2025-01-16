@@ -55,6 +55,9 @@ ros2 run turtlebot_moveit srv_call_test.py 2 close
 
 
 ## aruco marker detect
+
+1. [ros ws 안에 aruco marker detector 패키지 build](https://github.com/cananella/aruco_marker_detect.git)
+2. [home 에서 aruco marker 생성 및 테스트](https://github.com/fdcl-gwu/aruco-markers)
 ``` bash
 ## on SBC  turn on cam 
 ros2 run usb_cam usb_cam_node_exe   ## carmera node
