@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-##
-##
+## ros2 run turtlebot_moveit srv_call_test.py 2 close
+## cmd =0  waypoint 이동 (미구현)
+## cmd =1  arm named target 이동
+## cmd =2  gripper named target 이동
 import rclpy
 from rclpy.node import Node
 from turtlebot_cosmo_interface.srv import MoveitControl

@@ -29,6 +29,29 @@ ros2 run usb_cam usb_cam_node_exe
 ## on PC
 ros2 run camera_calibration cameracalibrator --size 7x9 --square 0.02 --ros-args -r image:=/image_raw
 ```
+## arm moveit insterface
+[arm 을 컨트롤 하기위해 커스텀 서비스가 필요함](https://github.com/cananella/turtlebot_cosmo_interface)
+
+``` bash
+## on SBC  turn on robot
+ros2 launch turtlebot3_manipulation_bringup hardware.launch.py
+
+
+
+## on pc    arm controller
+ros2 run turtlebot_moveit turtlebot_arm_controller 
+
+
+## on pc   arm service test
+ros2 run turtlebot_moveit srv_call_test.py 2 close
+
+## cmd =0  waypoint 이동 (미구현)
+## cmd =1  arm named target 이동
+## cmd =2  gripper named target 이동
+
+```
+
+
 
 
 ## aruco marker detect

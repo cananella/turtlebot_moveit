@@ -59,6 +59,7 @@ install(PROGRAMS
   scripts/aruco_marker_detect.py  # Add your Python scripts here
   scripts/aruco_move_test.py
   scripts/srv_call_test.py
+  scripts/task.py
   DESTINATION lib/${PROJECT_NAME}
 )
 # Install calibration parameters
