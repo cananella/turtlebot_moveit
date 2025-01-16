@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
+##
+##
 import rclpy
 from rclpy.node import Node
 from turtlebot_cosmo_interface.srv import MoveitControl
 from geometry_msgs.msg import Pose, PoseArray
+import argparse
 
 class TurtlebotArmClient(Node):
 
@@ -24,12 +27,15 @@ class TurtlebotArmClient(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+    parser = argparse.ArgumentParser(description='Send MoveitControl command to TurtlebotArmClient')
+    parser.add_argument('cmd', type=int, help='Command to send (e.g., 0 for waypoints, 1 for named target)')
+    parser.add_argument('posename', type=str, help='Pose name for the command')
+    parsed_args = parser.parse_args()
+
     client = TurtlebotArmClient()
 
     # Example usage
-    cmd = 1  # Command to move to a named target
-    posename = 'home'
-    response = client.send_request(cmd, posename)
+    response = client.send_request(parsed_args.cmd, parsed_args.posename)
     client.get_logger().info(f'Response: {response.response}')
 
     rclpy.shutdown()
