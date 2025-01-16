@@ -29,7 +29,6 @@ int main(int argc, char * argv[])
   arm_interface.setPlanningTime(10.0); 
 
   // moveit core 의 gripper 그룹을 사용하기위한 선언
-  using moveit::planning_interface::MoveGroupInterface;
   auto gripper_interface = MoveGroupInterface(node, "gripper");
 
   // 로봇 상태를 가져오기 위해 로봇 상태 모니터를 설정

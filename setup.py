@@ -9,6 +9,7 @@ setup(
     py_modules=[
         'scripts.aruco_marker_detect',  # Add your Python scripts here
         'scripts.aruco_move_test',  # Add your Python scripts here
+        'scripts.srv_call_test',  # Add your Python scripts here
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -21,6 +22,7 @@ setup(
         'console_scripts': [
             'aruco_marker_detect = scripts.aruco_marker_detect:main',  # Add your entry points here
             'aruco_move_test = scripts.aruco_move_test:main',  # Add your entry points here
+            'srv_call_test = scripts.srv_call_test:main',
             
         ],
     },

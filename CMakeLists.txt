@@ -13,11 +13,12 @@ find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(aruco_msgs REQUIRED)
+find_package(turtlebot_cosmo_interface REQUIRED)
 
-find_package(rosidl_default_generators REQUIRED)
 
 add_executable(turtlebot_moveit src/turtlebot_moveit.cpp)
 add_executable(get_eef_pose src/get_eef_pose.cpp)
+add_executable(turtlebot_arm_controller src/turtlebot_arm_controller.cpp)
 
 
 target_include_directories(turtlebot_moveit PUBLIC
@@ -37,13 +38,17 @@ ament_target_dependencies(
   "geometry_msgs"
   "tf2_geometry_msgs"
 )
+ament_target_dependencies(
+  turtlebot_arm_controller
+  "moveit_ros_planning_interface"
+  "rclcpp"
+  "geometry_msgs"
+  "tf2_geometry_msgs"
+  "turtlebot_cosmo_interface"
+)
 
-# rosidl_generate_interfaces(${PROJECT_NAME}
-#   "srv/DetectionRQ.srv"
-#   DEPENDENCIES vision_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg
-#  )
 
-install(TARGETS turtlebot_moveit get_eef_pose
+install(TARGETS turtlebot_moveit get_eef_pose turtlebot_arm_controller
   DESTINATION lib/${PROJECT_NAME})
 
 # Install Python modules
@@ -53,6 +58,7 @@ ament_python_install_package(scripts)  # Point to the scripts directory
 install(PROGRAMS
   scripts/aruco_marker_detect.py  # Add your Python scripts here
   scripts/aruco_move_test.py
+  scripts/srv_call_test.py
   DESTINATION lib/${PROJECT_NAME}
 )
 # Install calibration parameters
